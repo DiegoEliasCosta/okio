@@ -17,7 +17,7 @@ package com.squareup.okio.benchmarks;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
-import okio.Buffer;
+
 import org.openjdk.jmh.Main;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
@@ -30,7 +30,10 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.RunnerException;
+
+import okio.Buffer;
 
 @Fork(1)
 @Warmup(iterations = 5, time = 2)
@@ -53,18 +56,18 @@ public class GetByteBenchmark {
   }
 
   @Benchmark
-  public void getByteBeginning() {
-    buffer.getByte(0);
+  public void getByteBeginning(Blackhole bh) {
+	  bh.consume(buffer.getByte(0));
   }
 
   @Benchmark
-  public void getByteEnd() {
-    buffer.getByte(buffer.size() - 1);
+  public void getByteEnd(Blackhole bh) {
+	  bh.consume(buffer.getByte(buffer.size() - 1));
   }
 
   @Benchmark
-  public void getByteMiddle() {
-    buffer.getByte(buffer.size() / 2);
+  public void getByteMiddle(Blackhole bh) {
+	  bh.consume(buffer.getByte(buffer.size() / 2));
   }
 
   public static void main(String[] args) throws IOException, RunnerException {

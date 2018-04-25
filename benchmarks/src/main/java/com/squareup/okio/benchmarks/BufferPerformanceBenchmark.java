@@ -39,6 +39,7 @@ import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.TearDown;
 import org.openjdk.jmh.annotations.Threads;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.Blackhole;
 
 import okio.Buffer;
 import okio.BufferedSource;
@@ -134,15 +135,15 @@ public class BufferPerformanceBenchmark {
   @Benchmark
   @GroupThreads(1)
   @Group("cold")
-  public void thinkReadHot(HotBuffers buffers) throws IOException {
-    buffers.receive(requestBytes).readAll(NullSink);
+  public void thinkReadHot(HotBuffers buffers, Blackhole bh) throws IOException {
+	  bh.consume(buffers.receive(requestBytes).readAll(NullSink));
   }
 
   @Benchmark
   @GroupThreads(3)
   @Group("cold")
-  public void thinkWriteCold(ColdBuffers buffers) throws IOException {
-    buffers.transmit(responseBytes).readAll(NullSink);
+  public void thinkWriteCold(ColdBuffers buffers, Blackhole bh) throws IOException {
+	  bh.consume(buffers.transmit(responseBytes).readAll(NullSink));
   }
 
   private void readWriteRecycle(HotBuffers buffers) throws IOException {

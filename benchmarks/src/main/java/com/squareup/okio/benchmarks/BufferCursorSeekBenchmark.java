@@ -30,6 +30,7 @@ import org.openjdk.jmh.annotations.Scope;
 import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
+import org.openjdk.jmh.infra.Blackhole;
 import org.openjdk.jmh.runner.RunnerException;
 
 @Fork(1)
@@ -56,42 +57,42 @@ public class BufferCursorSeekBenchmark {
   }
 
   @Benchmark
-  public void seekBeginning() {
-    buffer.readUnsafe(cursor);
+  public void seekBeginning(Blackhole bh) {
+    bh.consume(buffer.readUnsafe(cursor));
     try {
-      cursor.seek(0);
+      bh.consume(cursor.seek(0));
     } finally {
       cursor.close();
     }
   }
 
   @Benchmark
-  public void seekEnd() {
-    buffer.readUnsafe(cursor);
+  public void seekEnd(Blackhole bh) {
+	  bh.consume(buffer.readUnsafe(cursor));
     try {
-      cursor.seek(buffer.size() - 1);
+    	bh.consume(cursor.seek(buffer.size() - 1));
     } finally {
       cursor.close();
     }
   }
 
   @Benchmark
-  public void seekForward() {
-    buffer.readUnsafe(cursor);
+  public void seekForward(Blackhole bh) {
+	  bh.consume(buffer.readUnsafe(cursor));
     try {
-      cursor.seek(0);
-      cursor.seek(1);
+    	bh.consume(cursor.seek(0));
+    	bh.consume(cursor.seek(1));
     } finally {
       cursor.close();
     }
   }
 
   @Benchmark
-  public void seekBackward() {
-    buffer.readUnsafe(cursor);
+  public void seekBackward(Blackhole bh) {
+    bh.consume(buffer.readUnsafe(cursor));
     try {
-      cursor.seek(buffer.size() - 1);
-      cursor.seek(buffer.size() - 2);
+    	bh.consume(cursor.seek(buffer.size() - 1));
+    	bh.consume(cursor.seek(buffer.size() - 2));
     } finally {
       cursor.close();
     }
