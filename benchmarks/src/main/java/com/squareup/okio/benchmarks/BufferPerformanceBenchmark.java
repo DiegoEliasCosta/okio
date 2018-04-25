@@ -56,7 +56,7 @@ import static java.util.Objects.requireNonNull;
 @OutputTimeUnit(TimeUnit.SECONDS)
 public class BufferPerformanceBenchmark {
 
-  public static final File OriginPath =
+  public static File OriginPath =
       new File(System.getProperty("okio.bench.origin.path", "/dev/urandom"));
 
   /* Test Workload
@@ -304,7 +304,7 @@ public class BufferPerformanceBenchmark {
   }
 
   @SuppressWarnings("resource")
-  private static final Sink NullSink = new Sink() {
+  private static Sink NullSink = new Sink() {
 
     @Override public void write(Buffer source, long byteCount) throws EOFException {
       source.skip(byteCount);
